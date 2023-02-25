@@ -41,6 +41,14 @@ Pasos
 5.	El usuario recibe las actualizaciones en pantalla.
 6.	FIN.
 
+Muchas veces necesitamos utilizar parámetros entre distintos métodos de un mismo formulario web, o incluso entre formularios distintos. Una forma dinámica de realizar este intercambio de datos es la utilización del ViewState y del espacio de sesión.
+
+Antes de embarcarnos a almacenar datos y datos en estos dos espacios de memoria, hay que dejar claras dos cosas:
+
+El ViewState se intercambia continuamente entre cliente y servidor, por lo que es aconsejable no sobrecargarlo. Al aumentar el ViewState, aumentará el tamaño de la página, y por consiguiente, el tráfico de datos y la velocidad de carga de la misma.
+La sesión se almacena en servidor, por lo que si nuestro sitio web posee una carga de datos moderada – alta, el rendimiento del mismo se verá penalizado. Nuevamente, es aconsejable utilizar con cautela este espacio de memoria.
+Teniendo claros estos dos conceptos, utilizaremos el ViewState para almacenar datos locales (de una misma página) y la sesión para pasar parámetros entre distintas páginas sin hacer uso de la QueryString. Para los profanos en la materia, explicaremos que la QueryString es la colección de parámetros que pueden, opcionalmente, acompañar a la dirección de la página. Éstos parámetros ofrecen información directamente recopilable por nuestro formulario web, pero cuenta con la desventaja de que es visible para el usuario.
+
 
 VISTA
 
