@@ -41,3 +41,156 @@ Pasos
 5.	El usuario recibe las actualizaciones en pantalla.
 6.	FIN.
 
+
+VISTA
+
+<?php 
+
+require_once 'model/note.php';
+
+class noteController{
+	public $page_title;
+	public $view;
+
+	public function __construct() {
+		$this->view = 'list_note';
+		$this->page_title = '';
+		$this->noteObj = new Note();
+	}
+
+	/* List all notes */
+	public function list(){
+		$this->page_title = 'Listado de notas';
+		return $this->noteObj->getNotes();
+	}
+
+	/* Load note for edit */
+	public function edit($id = null){
+		$this->page_title = 'Editar nota';
+		$this->view = 'edit_note';
+		/* Id can from get param or method param */
+		if(isset($_GET["id"])) $id = $_GET["id"];
+		return $this->noteObj->getNoteById($id);
+	}
+
+	/* Create or update note */
+	public function save(){
+		$this->view = 'edit_note';
+		$this->page_title = 'Editar nota';
+		$id = $this->noteObj->save($_POST);
+		$result = $this->noteObj->getNoteById($id);
+		$_GET["response"] = true;
+		return $result;
+	}
+
+	/* Confirm to delete */
+	public function confirmDelete(){
+		$this->page_title = 'Eliminar nota';
+		$this->view = 'confirm_delete_note';
+		return $this->noteObj->getNoteById($_GET["id"]);
+	}
+
+	/* Delete */
+	public function delete(){
+		$this->page_title = 'Listado de notas';
+		$this->view = 'delete_note';
+		return $this->noteObj->deleteNoteById($_POST["id"]);
+	}
+
+}
+
+?>
+
+
+
+MODELO
+<?php 
+
+require_once 'config/config.php';
+
+class Db {
+
+	private $host;
+	private $db;
+	private $user;
+	private $pass;
+	public $conection;
+
+	public function __construct() {		
+
+		$this->host = constant('DB_HOST');
+		$this->db = constant('DB');
+		$this->user = constant('DB_USER');
+		$this->pass = constant('DB_PASS');
+
+		try {
+           $this->conection = new PDO('mysql:host='.$this->host.'; dbname='.$this->db, $this->user, $this->pass);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit();
+        }
+
+	}
+
+}
+
+?>
+
+CONTROLADOR
+
+<?php 
+
+require_once 'model/note.php';
+
+class noteController{
+	public $page_title;
+	public $view;
+
+	public function __construct() {
+		$this->view = 'list_note';
+		$this->page_title = '';
+		$this->noteObj = new Note();
+	}
+
+	/* List all notes */
+	public function list(){
+		$this->page_title = 'Listado de notas';
+		return $this->noteObj->getNotes();
+	}
+
+	/* Load note for edit */
+	public function edit($id = null){
+		$this->page_title = 'Editar nota';
+		$this->view = 'edit_note';
+		/* Id can from get param or method param */
+		if(isset($_GET["id"])) $id = $_GET["id"];
+		return $this->noteObj->getNoteById($id);
+	}
+
+	/* Create or update note */
+	public function save(){
+		$this->view = 'edit_note';
+		$this->page_title = 'Editar nota';
+		$id = $this->noteObj->save($_POST);
+		$result = $this->noteObj->getNoteById($id);
+		$_GET["response"] = true;
+		return $result;
+	}
+
+	/* Confirm to delete */
+	public function confirmDelete(){
+		$this->page_title = 'Eliminar nota';
+		$this->view = 'confirm_delete_note';
+		return $this->noteObj->getNoteById($_GET["id"]);
+	}
+
+	/* Delete */
+	public function delete(){
+		$this->page_title = 'Listado de notas';
+		$this->view = 'delete_note';
+		return $this->noteObj->deleteNoteById($_POST["id"]);
+	}
+
+}
+
+?>
