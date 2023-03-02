@@ -202,3 +202,57 @@ class noteController{
 }
 
 ?>
+
+
+La arquitectura MVC separa la lógica de negocio (el modelo) y la presentación (la vista) por lo que se consigue un mantenimiento más sencillo de las aplicaciones. Si por ejemplo una misma aplicación debe ejecutarse tanto en un navegador estándar como un un navegador de un dispositivo móvil, solamente es necesario crear una vista nueva para cada dispositivo; manteniendo el controlador y el modelo original. El controlador se encarga de aislar al modelo y a la vista de los detalles del protocolo utilizado para las peticiones (HTTP, consola de comandos, email, etc.). El modelo se encarga de la abstracción de la lógica relacionada con los datos, haciendo que la vista y las acciones sean independientes de, por ejemplo, el tipo de gestor de bases de datos utilizado por la aplicación.
+
+>Las capas de la arquitectura MVC<
+Para poder entender las ventajas de utilizar el patrón MVC, se va a transformar una aplicación simple realizada con PHP en una aplicación que sigue la arquitectura MVC. Un buen ejemplo para ilustrar esta explicación es el de mostrar una lista con las últimas entradas o artículos de un blog.
+
+>Programación simple<
+Utilizando solamente PHP normal y corriente, el script necesario para mostrar los artículos almacenados en una base de datos 
+
+>Un script simple<
+
+<?php
+
+// Conectar con la base de datos y seleccionarla
+$conexion = mysql_connect('localhost', 'miusuario', 'micontrasena');
+mysql_select_db('blog_db', $conexion);
+
+// Ejecutar la consulta SQL
+$resultado = mysql_query('SELECT fecha, titulo FROM articulo', $conexion);
+
+?>
+
+<html>
+  <head>
+    <title>Listado de Artículos</title>
+  </head>
+  <body>
+   <h1>Listado de Artículos</h1>
+   <table>
+     <tr><th>Fecha</th><th>Titulo</th></tr>
+<?php
+// Mostrar los resultados con HTML
+while ($fila = mysql_fetch_array($resultado, MYSQL_ASSOC))
+{
+echo "\t<tr>\n";
+printf("\t\t<td> %s </td>\n", $fila['fecha']);
+printf("\t\t<td> %s </td>\n", $fila['titulo']);
+echo "\t</tr>\n";
+}
+?>
+    </table>
+  </body>
+</html>
+
+<?php
+
+// Cerrar la conexion
+mysql_close($conexion);
+
+?>
+
+
+
